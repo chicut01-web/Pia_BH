@@ -1,0 +1,6 @@
+{
+  "name": "La Tabaccheria dei Sogni - Pia Compleanno",
+  "description": "Un'esperienza interattiva regalo di compleanno per Piuccia tra gratta e vinci, slot machine e ruota della fortuna nella Tabaccheria dei Sogni.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
