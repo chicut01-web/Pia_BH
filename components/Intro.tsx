@@ -8,7 +8,7 @@ const APPARE = { duration: 0.7, ease: [0.16, 1, 0.3, 1] as const };
 
 export default function Intro({ onAvanti }: { onAvanti: () => void }) {
   return (
-    <div className="relative flex min-h-dvh flex-col items-center justify-center gap-7 px-6 py-10 text-center overflow-hidden">
+    <div className="touch-pan-y relative flex min-h-dvh w-full flex-col items-center justify-start sm:justify-center gap-7 px-6 py-10 text-center overflow-y-auto">
       {/* Glow ambientale caldo */}
       <div className="pointer-events-none absolute h-96 w-96 rounded-full bg-[radial-gradient(circle,rgba(255,180,0,0.15)_0%,transparent_70%)] blur-3xl" />
 
@@ -76,8 +76,8 @@ export default function Intro({ onAvanti }: { onAvanti: () => void }) {
           </span>
         </div>
 
-        <p className="text-[13px] leading-relaxed text-white/60">
-          Quello che vinci è vero. Puoi arrivare fino a <strong className="text-[var(--color-verde)]">50€</strong>!
+        <p className="text-[13px] leading-relaxed text-white/80">
+          Puoi vincere fino a <strong className="text-[var(--color-verde)]">50€ di buono sconto</strong> per la nostra prossima vacanza insieme! ✈️🏖️
         </p>
       </motion.div>
 

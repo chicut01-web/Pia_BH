@@ -71,17 +71,20 @@ export default function Esitino({
       ) : esito.vinta ? (
         <div className="flex flex-col items-center gap-1 my-2">
           <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-[var(--color-oro)]">
-            Hai Vinto Vero! 💰
+            Hai Vinto! 💰
           </p>
           <motion.p
             initial={{ scale: 0.65, y: 8 }}
             animate={{ scale: 1, y: 0 }}
             transition={{ ...MOLLA, duration: 0.7 }}
-            className="font-[family-name:var(--font-titolo)] text-[56px] leading-none text-emerald-glow my-1"
+            className="font-[family-name:var(--font-titolo)] text-[52px] leading-none text-emerald-glow my-0.5"
           >
             {esito.importo}
-            <span className="text-[32px] font-normal">€</span>
+            <span className="text-[30px] font-normal">€</span>
           </motion.p>
+          <p className="text-[11px] font-bold uppercase tracking-wider text-emerald-400/90">
+            di buono sconto vacanza! ✈️
+          </p>
         </div>
       ) : (
         <div className="my-2">

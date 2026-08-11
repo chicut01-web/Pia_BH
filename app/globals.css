@@ -31,11 +31,22 @@ html,
 body {
   background: oklch(0.10 0.03 280);
   color: var(--color-carta);
-  overscroll-behavior: none;
+  overscroll-behavior-y: auto;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-overflow-scrolling: touch;
+  overflow-x: hidden;
+}
+
+/* Evita selezioni accidentali di testo sui pulsanti e controlli di gioco */
+button,
+.select-none {
   -webkit-user-select: none;
   user-select: none;
-  -webkit-tap-highlight-color: transparent;
-  overflow-x: hidden;
+}
+
+/* Abilita il pan verticale nativo per lo scroll sui contenitori di gioco */
+.touch-pan-y {
+  touch-action: pan-y;
 }
 
 /* Canvas d'argento non interferisce con le gesture dello scroll */

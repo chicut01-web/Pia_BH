@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import type { GiocoId } from "@/lib/config";
 import { gioca, puoGiocare, sessioneFinita, Stato, statoIniziale } from "@/lib/engine";
 import type { Esito } from "@/lib/engine";
-import { azzera, carica, salva } from "@/lib/storage";
+import { azzera } from "@/lib/storage";
 import Gate from "@/components/Gate";
 import Intro from "@/components/Intro";
 import Hub from "@/components/Hub";
@@ -20,31 +20,19 @@ export type Schermata =
 
 export default function Pagina() {
   const [pronto, setPronto] = useState(false);
-  const [stato, setStato] = useState<Stato>(() => {
-    const s = carica();
-    return s ? s.stato : statoIniziale();
-  });
-  const [sbloccato, setSbloccato] = useState<boolean>(() => {
-    const s = carica();
-    return s ? s.sbloccato : false;
-  });
-  const [introVista, setIntroVista] = useState<boolean>(() => {
-    const s = carica();
-    return s ? s.introVista : false;
-  });
+  const [stato, setStato] = useState<Stato>(() => statoIniziale());
+  const [sbloccato, setSbloccato] = useState<boolean>(false);
+  const [introVista, setIntroVista] = useState<boolean>(false);
   const [schermata, setSchermata] = useState<Schermata>("gate");
   const [esito, setEsito] = useState<Esito | null>(null);
 
-  // Marca il client come pronto per evitare eventuali discrepanze da SSR.
+  // All'apertura o ricaricamento di ogni nuova scheda, fa ripartire l'app sempre da capo
   useEffect(() => {
+    azzera();
     queueMicrotask(() => {
       setPronto(true);
     });
   }, []);
-
-  useEffect(() => {
-    if (pronto) salva({ stato, sbloccato, introVista });
-  }, [pronto, stato, sbloccato, introVista]);
 
   // Calcola la schermata attiva in base alle condizioni Correnti.
   let schermataAttiva: Schermata = schermata;

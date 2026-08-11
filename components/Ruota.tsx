@@ -9,10 +9,15 @@ import Esitino from "./Esitino";
 import { useAudio } from "@/hooks/useAudio";
 
 export default function Ruota({ esito, onFine, onAncora }: { esito: Esito; onFine: () => void; onAncora: () => void }) {
-  const { etichette, angolo } = useMemo(
-    () => costruisciRuota(esito, esito.stato.passiRng + 2),
-    [esito],
-  );
+  const { etichette, angolo } = useMemo(() => {
+    const seedDinamico =
+      (esito.stato.seed * 1664525 +
+        esito.stato.giocate * 1013904223 +
+        esito.stato.passiRng * 22695477 +
+        202) >>>
+      0;
+    return costruisciRuota(esito, seedDinamico);
+  }, [esito]);
   const { playTick, playClick } = useAudio();
 
   const [girato, setGirato] = useState(false);
@@ -55,7 +60,7 @@ export default function Ruota({ esito, onFine, onAncora }: { esito: Esito; onFin
   }).join(", ");
 
   return (
-    <div className="flex min-h-dvh flex-col items-center justify-center gap-7 px-5 py-8">
+    <div className="touch-pan-y flex min-h-dvh w-full flex-col items-center justify-start sm:justify-center gap-7 px-5 py-8 overflow-y-auto">
       <motion.div
         initial={{ opacity: 0, y: -15 }}
         animate={{ opacity: 1, y: 0 }}

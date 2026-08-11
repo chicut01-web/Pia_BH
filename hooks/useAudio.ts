@@ -129,6 +129,39 @@ class SoundFX {
     } catch {}
   }
 
+  playLeverPull() {
+    const ctx = this.getContext();
+    if (!ctx) return;
+    try {
+      const now = ctx.currentTime;
+      // Impatto meccanico clunk
+      const osc1 = ctx.createOscillator();
+      const gain1 = ctx.createGain();
+      osc1.type = "sawtooth";
+      osc1.frequency.setValueAtTime(160, now);
+      osc1.frequency.exponentialRampToValueAtTime(45, now + 0.12);
+      gain1.gain.setValueAtTime(0.22, now);
+      gain1.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+      osc1.connect(gain1);
+      gain1.connect(ctx.destination);
+      osc1.start(now);
+      osc1.stop(now + 0.12);
+
+      // Effetto molla metallica
+      const osc2 = ctx.createOscillator();
+      const gain2 = ctx.createGain();
+      osc2.type = "sine";
+      osc2.frequency.setValueAtTime(320, now + 0.04);
+      osc2.frequency.exponentialRampToValueAtTime(650, now + 0.18);
+      gain2.gain.setValueAtTime(0.14, now + 0.04);
+      gain2.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
+      osc2.connect(gain2);
+      gain2.connect(ctx.destination);
+      osc2.start(now + 0.04);
+      osc2.stop(now + 0.22);
+    } catch {}
+  }
+
   playWin(amount: number = 2) {
     const ctx = this.getContext();
     if (!ctx) return;
@@ -253,6 +286,7 @@ export function useAudio() {
   const playScratch = useCallback(() => soundEngine.playScratch(), []);
   const playTick = useCallback(() => soundEngine.playTick(), []);
   const playReelStop = useCallback(() => soundEngine.playReelStop(), []);
+  const playLeverPull = useCallback(() => soundEngine.playLeverPull(), []);
   const playWin = useCallback((amount?: number) => soundEngine.playWin(amount), []);
   const playRigioca = useCallback(() => soundEngine.playRigioca(), []);
   const playLoss = useCallback(() => soundEngine.playLoss(), []);
@@ -265,6 +299,7 @@ export function useAudio() {
     playScratch,
     playTick,
     playReelStop,
+    playLeverPull,
     playWin,
     playRigioca,
     playLoss,

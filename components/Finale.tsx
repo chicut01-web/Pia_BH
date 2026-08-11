@@ -58,7 +58,7 @@ export default function Finale({ stato }: { stato: Stato }) {
   }, []);
 
   return (
-    <div className="relative min-h-dvh overflow-hidden flex flex-col items-center justify-center px-6 py-10 text-center">
+    <div className="touch-pan-y relative min-h-dvh w-full overflow-y-auto flex flex-col items-center justify-start sm:justify-center px-6 py-10 text-center">
       {/* Sfondo sfumato romantico */}
       <Image
         src="/assets/foto/sfondo-finale.webp"
@@ -127,13 +127,16 @@ export default function Finale({ stato }: { stato: Stato }) {
           transition={{ delay: DURATA_CONTEGGIO / 1000 + 0.3 }}
           className="space-y-3"
         >
-          <p className="text-base font-semibold leading-relaxed text-white/90">
-            I 27€ sono veri! E sono il budget per la nostra prossima vacanza insieme! ✈️🏖️
+          <p className="text-base font-semibold leading-relaxed text-white/95">
+            Hai vinto <strong className="text-[var(--color-verde)]">{conteggio}€ di buono sconto</strong> per la nostra prossima vacanza insieme! ✈️🏖️
+          </p>
+          <p className="text-[13px] leading-relaxed text-amber-200/90 bg-amber-500/10 border border-amber-500/30 rounded-xl p-3">
+            È un buono sconto simbolico per il nostro prossimo viaggio insieme (e il regalo vero in realtà è un altro ed è una sorpresa! 🎁)
           </p>
           <p className="text-xs text-white/60">
-            Dove andare lo decidiamo insieme noi due.
+            Dove andare in vacanza lo decidiamo insieme noi due.
           </p>
-          <p className="pt-3 font-[family-name:var(--font-titolo)] text-3xl text-gold-glow">
+          <p className="pt-2 font-[family-name:var(--font-titolo)] text-3xl text-gold-glow">
             Ti amo Piuccia ❤️
           </p>
         </motion.div>

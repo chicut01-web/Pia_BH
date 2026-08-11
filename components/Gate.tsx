@@ -19,7 +19,7 @@ export default function Gate({ onSblocco }: { onSblocco: () => void }) {
   }
 
   return (
-    <div className="relative flex min-h-dvh flex-col items-center justify-center gap-8 overflow-hidden px-6">
+    <div className="touch-pan-y relative flex min-h-dvh w-full flex-col items-center justify-start sm:justify-center gap-8 px-6 py-8 overflow-y-auto">
       {/* Texture della saracinesca stilizzata in metallo scuro lucido */}
       <div
         className="pointer-events-none absolute inset-0 opacity-[0.25]"

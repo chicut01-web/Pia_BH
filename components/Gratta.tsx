@@ -294,7 +294,7 @@ export default function Gratta({
   if (!esito.eseguita) return null;
 
   return (
-    <div className="flex min-h-dvh flex-col items-center justify-center gap-5 px-3 py-6">
+    <div className="touch-pan-y flex min-h-dvh w-full flex-col items-center justify-start sm:justify-center gap-5 px-3 py-6 overflow-y-auto">
       <motion.div
         initial={{ opacity: 0, scale: 0.92, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}

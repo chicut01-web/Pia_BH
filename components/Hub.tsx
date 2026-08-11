@@ -42,7 +42,7 @@ export default function Hub({
   }
 
   return (
-    <div className="relative min-h-dvh pb-12">
+    <div className="touch-pan-y relative min-h-dvh w-full pb-12 overflow-y-auto">
       <div className="relative mx-auto flex min-h-dvh w-full max-w-md flex-col px-5 pt-6">
         {/* Header con Insegna Neon, Mute Toggle & Scontrino VIP del Saldo */}
         <header className="flex items-center justify-between gap-3">
@@ -83,7 +83,7 @@ export default function Hub({
 
             <div className="flex items-center justify-between pt-2">
               <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/50">
-                Vinti Veri
+                Buono Vacanza
               </span>
               <motion.span
                 key={stato.vinto}

@@ -29,7 +29,8 @@ export type Faccia = number | "RIGIOCA";
  *  Vincita in denaro e biglietto gratis sono entrambi un tris; la perdita non lo è mai — al
  *  massimo due uguali, che è il quasi-vinto da cui nasce la tensione. */
 export function facceFinali(esito: Esito, seed: number): Faccia[] {
-  const rng = creaRng(seed);
+  const h = Math.imul(seed ^ 0x85ebca6b, 0xc2b2ae35) >>> 0;
+  const rng = creaRng(h);
 
   if (esito.rigioca) return ["RIGIOCA", "RIGIOCA", "RIGIOCA"];
 
@@ -80,7 +81,8 @@ export function costruisciRuota(
   esito: Esito,
   seed: number,
 ): { etichette: Etichetta[]; bersaglio: number; angolo: number } {
-  const rng = creaRng(seed);
+  const h = Math.imul(seed ^ 0x85ebca6b, 0xc2b2ae35) >>> 0;
+  const rng = creaRng(h);
 
   const etichette: Etichetta[] = [];
   for (let i = 0; i < SPICCHI; i++) {

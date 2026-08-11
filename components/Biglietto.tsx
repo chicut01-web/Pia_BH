@@ -67,7 +67,7 @@ export default function Biglietto({
   const t = CONFIG_TEMI[taglio];
 
   return (
-    <div className="relative w-full max-w-[21.5rem] overflow-hidden rounded-[20px] bordo-laminato bg-[#120918] p-1.5 shadow-[0_30px_70px_-15px_rgba(0,0,0,0.95)]">
+    <div className="touch-pan-y relative w-full max-w-[21.5rem] overflow-hidden rounded-[20px] bordo-laminato bg-[#120918] p-1.5 shadow-[0_30px_70px_-15px_rgba(0,0,0,0.95)]">
       {/* Sfondo laminato o fotorealistico del biglietto */}
       <div className={`relative overflow-hidden rounded-[16px] bg-gradient-to-b ${t.bgCarta} p-3.5 border border-amber-500/30`}>
         {/* Pattern filigrana di sicurezza sul biglietto */}
