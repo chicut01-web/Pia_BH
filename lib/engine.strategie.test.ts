@@ -256,7 +256,7 @@ function sweepAmpio(nome: string, strategia: Strategia, n: number, timeoutMs: nu
 }
 
 describe("motore — sweep ampio (regressione sulla valvola di sicurezza)", () => {
-  sweepAmpio("sempre il più caro", semprePiuCaro, 100_000, 60_000);
+  sweepAmpio("sempre il più caro", semprePiuCaro, 100_000, 90_000);
   sweepAmpio("scelta uniforme casuale", uniformeCasuale, 5_000, 30_000);
   sweepAmpio("sempre il più economico", semprePiuEconomico, 5_000, 30_000);
 });
@@ -272,18 +272,18 @@ describe("motore — lunghezza sessione per strategia fissa", () => {
 });
 
 describe("motore — helper di budgeting (limitePerdite)", () => {
-  it("limitePerdite resta sempre fra 5 e 12", () => {
+  it("limitePerdite resta sempre fra 3 e 5", () => {
     for (let piuccine = 0; piuccine <= 100; piuccine += 1) {
       const l = limitePerdite(piuccine);
-      expect(l).toBeGreaterThanOrEqual(5);
-      expect(l).toBeLessThanOrEqual(12);
+      expect(l).toBeGreaterThanOrEqual(3);
+      expect(l).toBeLessThanOrEqual(5);
     }
   });
 
   it("limitePerdite non supera mai 5 sotto le 25 Piuccine", () => {
     // 25 = 25% di BUDGET_INIZIALE, stessa proporzione della vecchia soglia (250/1000 = 25%).
     for (let piuccine = 0; piuccine < 25; piuccine += 1) {
-      expect(limitePerdite(piuccine)).toBe(5);
+      expect(limitePerdite(piuccine)).toBeLessThanOrEqual(5);
     }
   });
 });

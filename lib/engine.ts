@@ -87,22 +87,11 @@ function costoMaxAcquistabile(piuccine: number): number {
 }
 
 /** Quante perdite di fila sono ammesse a questo punto della sessione.
- *  Le sessioni lunghe tollerano secche più lunghe — è anche più fedele ai
- *  gratta e vinci veri. Verso la fine il limite si stringe, così il finale
- *  non muore.
- *
- *  Il divisore (8) è calibrato sul numero massimo di giocate residue possibili
- *  (BUDGET_INIZIALE / COSTO_MINIMO = 100), non su un valore assoluto: era 16 quando quel massimo
- *  era 200 (rescale precedente). Dimezzato il massimo, dimezzato il divisore — così le due
- *  transizioni del clamp restano alla STESSA frazione di sessione: il limite tocca il tetto di 12
- *  quando restano oltre l'88% delle giocate residue possibili (era: giocateResidue >= 177/200 =
- *  88.5%; ora: >= 89/100 = 89%) e scende al pavimento di 5 sotto il 40% (era: <= 80/200 = 40%;
- *  ora: <= 40/100 = 40%). Il clamp 5..12 in sé non è stato toccato: rappresenta quante perdite di
- *  fila restano plausibili in un vero gratta e vinci, un giudizio narrativo indipendente dalla
- *  lunghezza assoluta della sessione, non un valore da riscalare insieme al budget. */
+ *  Soglia ridotta a 3..5 per garantire vincite/rigioca più frequenti e
+ *  mantenere il gioco dinamico e gratificante. */
 export function limitePerdite(piuccine: number): number {
   const giocateResidue = Math.floor(piuccine / COSTO_MINIMO);
-  return Math.min(12, Math.max(5, Math.ceil(giocateResidue / 8)));
+  return Math.min(5, Math.max(3, Math.ceil(giocateResidue / 16)));
 }
 
 export function gioca(s: Stato, g: GiocoId): Esito {
@@ -218,12 +207,13 @@ export function gioca(s: Stato, g: GiocoId): Esito {
       // di 57€), ora a gap=3 (11.1% di 27€) — 8 * (27/57) = 3.79, arrotondato a 4 per lo stesso
       // ordine di grandezza (3.79 vs 4 sposta i due punti di transizione di meno di un decimo di
       // punto percentuale, verificato sopra).
-      const probabilita = inCoda ? 1 : Math.min(0.75, Math.max(0.2, gap / 4));
+      const probabilita = inCoda ? 1 : Math.min(0.85, Math.max(0.35, gap / 3));
       if (estrai() < probabilita) {
         // Fuori dalla finestra del colpo grosso nessuna vincita raggiunge la soglia: il tetto
-        // resta sotto SOGLIA_GROSSA. Si lascia sempre da parte 1€ di margine (stessa ragione del
-        // colpo grosso) più la riserva per il colpo grosso stesso se non ancora erogato.
-        const desiderato = gap * (0.6 + estrai() * 0.7);
+        // resta sotto SOGLIA_GROSSA. In condizioni normali si erogano vincite contenute (1-4€);
+        // in coda si adegua la quota per non lasciare un residuo alto all'ultima giocata.
+        const quota = inCoda ? 0.5 + estrai() * 0.4 : 0.2 + estrai() * 0.3;
+        const desiderato = gap * quota;
         const riservaGrossa = s.grossaErogata ? 0 : SOGLIA_GROSSA;
         const tetto = Math.min(SOGLIA_GROSSA - 1, residuo - riservaGrossa - 1);
         importo = importoAmmesso(desiderato, tetto);
