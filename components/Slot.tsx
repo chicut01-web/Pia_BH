@@ -103,7 +103,7 @@ export default function Slot({
       </motion.div>
 
       {/* Contenitore con Slot Machine Cabinet + Manovella Vintage Laterale */}
-      <div className="relative flex items-center justify-center w-full max-w-sm">
+      <div className="relative flex items-center justify-center w-full max-w-[320px] xs:max-w-[350px] sm:max-w-[420px] pr-6 sm:pr-8 pl-2 sm:pl-0">
         {/* Cabinet della Slot Machine */}
         <motion.div
           initial={{ opacity: 0, scale: 0.94 }}
@@ -111,29 +111,29 @@ export default function Slot({
           transition={{ duration: 0.5 }}
           className="foglia-oro relative z-10 w-full rounded-3xl p-1.5 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.95)]"
         >
-          <div className="rounded-[20px] bg-gradient-to-b from-[#2b0c1b] via-[#17050f] to-[#0d0208] p-4 sm:p-5 border border-amber-500/30">
+          <div className="rounded-[20px] bg-gradient-to-b from-[#2b0c1b] via-[#17050f] to-[#0d0208] p-3 sm:p-5 border border-amber-500/30">
             {/* Luci di coronamento slot */}
-            <div className="flex justify-center gap-3 mb-4">
+            <div className="flex justify-center gap-2.5 sm:gap-3 mb-3 sm:mb-4">
               {[0, 1, 2, 3, 4].map((idx) => (
                 <span
                   key={idx}
-                  className="h-2.5 w-2.5 rounded-full bg-[var(--color-oro)] shadow-[0_0_8px_rgba(255,215,0,0.8)] animate-pulse"
+                  className="h-2 w-2 sm:h-2.5 sm:w-2.5 rounded-full bg-[var(--color-oro)] shadow-[0_0_8px_rgba(255,215,0,0.8)] animate-pulse"
                   style={{ animationDelay: `${idx * 0.2}s` }}
                 />
               ))}
             </div>
 
             {/* Rulli Slot */}
-            <div className="flex justify-center gap-2 sm:gap-3 bg-black/70 p-2.5 sm:p-3 rounded-xl border border-amber-500/30 shadow-inner">
+            <div className="flex justify-center gap-1.5 xs:gap-2 sm:gap-3 bg-black/70 p-2 sm:p-3 rounded-xl border border-amber-500/30 shadow-inner">
               {correnti.map((faccia, i) => (
                 <motion.div
                   key={i}
                   animate={fermi.includes(i) ? { y: [0, -8, 0] } : {}}
                   transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
-                  className="relative flex h-[84px] w-[84px] sm:h-[92px] sm:w-[92px] items-center justify-center overflow-hidden rounded-xl bg-gradient-to-b from-amber-50 via-white to-amber-100 border-2 border-[var(--color-oro)]/80 shadow-[inset_0_4px_12px_rgba(0,0,0,0.4)]"
+                  className="relative flex h-[72px] w-[72px] xs:h-[82px] xs:w-[82px] sm:h-[92px] sm:w-[92px] items-center justify-center overflow-hidden rounded-xl bg-gradient-to-b from-amber-50 via-white to-amber-100 border-2 border-[var(--color-oro)]/80 shadow-[inset_0_4px_12px_rgba(0,0,0,0.4)]"
                 >
                   {faccia === "RIGIOCA" ? (
-                    <span className="px-1 text-center font-[family-name:var(--font-titolo)] text-[13px] sm:text-[14px] leading-tight text-[var(--color-cremisi)]">
+                    <span className="px-1 text-center font-[family-name:var(--font-titolo)] text-[11px] xs:text-[13px] sm:text-[14px] leading-tight text-[var(--color-cremisi)]">
                       RIGIOCA
                     </span>
                   ) : (
@@ -142,14 +142,14 @@ export default function Slot({
                       alt=""
                       fill
                       sizes="92px"
-                      className="object-contain p-2 sm:p-2.5 drop-shadow"
+                      className="object-contain p-1.5 xs:p-2 sm:p-2.5 drop-shadow"
                     />
                   )}
                 </motion.div>
               ))}
             </div>
 
-            <p className="mt-4 text-center text-[9.5px] font-bold uppercase tracking-[0.22em] text-amber-200/70">
+            <p className="mt-3 sm:mt-4 text-center text-[9px] sm:text-[9.5px] font-bold uppercase tracking-[0.2em] text-amber-200/70">
               Tre immagini uguali · Vinci Euro! 💰
             </p>
           </div>
@@ -158,44 +158,44 @@ export default function Slot({
         {/* --- MANOVELLA / LEVA MECCANICA VINTAGE (Lato Destro) --- */}
         <div
           onClick={azionaLeva}
-          className={`absolute -right-7 sm:-right-8 top-1/2 -translate-y-1/2 z-20 flex flex-col items-center cursor-pointer select-none transition-opacity ${
+          className={`absolute -right-1 sm:-right-2 top-1/2 -translate-y-1/2 z-20 flex flex-col items-center cursor-pointer select-none transition-opacity ${
             iniziato && !tirandoLeva ? "opacity-60 pointer-events-none" : "hover:scale-105"
           }`}
         >
           {/* Badge Indicatore "TIRA!" */}
           {!iniziato && (
             <motion.div
-              animate={{ y: [0, -6, 0] }}
+              animate={{ y: [0, -5, 0] }}
               transition={{ duration: 1.2, repeat: Infinity }}
-              className="absolute -top-11 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-amber-400 px-2 py-0.5 text-[8.5px] font-black uppercase text-black shadow-lg border border-yellow-200 z-30"
+              className="absolute -top-10 sm:-top-11 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-amber-400 px-2 py-0.5 text-[8px] sm:text-[8.5px] font-black uppercase text-black shadow-lg border border-yellow-200 z-30"
             >
               TIRA QUI! 👇
             </motion.div>
           )}
 
           {/* Innesto / Boccola metallica dorata sulla scocca */}
-          <div className="h-10 w-4 rounded-r-md bg-gradient-to-r from-amber-700 via-amber-500 to-amber-900 border border-amber-300/80 shadow-md" />
+          <div className="h-8 sm:h-10 w-3.5 sm:w-4 rounded-r-md bg-gradient-to-r from-amber-700 via-amber-500 to-amber-900 border border-amber-300/80 shadow-md" />
 
           {/* Asta e Pomello della Leva (Pivot in basso all'innesto) */}
           <motion.div
             animate={{
-              rotate: tirandoLeva ? 65 : 0,
-              y: tirandoLeva ? 28 : 0,
+              rotate: tirandoLeva ? 60 : 0,
+              y: tirandoLeva ? 24 : 0,
             }}
             transition={{
               type: "spring",
               stiffness: 300,
               damping: 18,
             }}
-            className="origin-bottom flex flex-col items-center -mt-10"
+            className="origin-bottom flex flex-col items-center -mt-8 sm:-mt-10"
           >
             {/* Pomello sferico rosso lucido 3D della manovella */}
-            <div className="h-10 w-10 sm:h-11 sm:w-11 rounded-full bg-gradient-to-br from-red-400 via-red-600 to-red-950 border-2 border-amber-300 shadow-[0_0_18px_rgba(239,68,68,0.95),inset_0_2px_6px_rgba(255,255,255,0.6)] flex items-center justify-center">
-              <div className="h-3 w-3 rounded-full bg-white/40 blur-[1px] -mt-2 -ml-2" />
+            <div className="h-9 w-9 sm:h-11 sm:w-11 rounded-full bg-gradient-to-br from-red-400 via-red-600 to-red-950 border-2 border-amber-300 shadow-[0_0_18px_rgba(239,68,68,0.95),inset_0_2px_6px_rgba(255,255,255,0.6)] flex items-center justify-center">
+              <div className="h-2.5 w-2.5 sm:h-3 sm:w-3 rounded-full bg-white/40 blur-[1px] -mt-1.5 -ml-1.5 sm:-mt-2 sm:-ml-2" />
             </div>
 
             {/* Asta metallica cromata della leva */}
-            <div className="h-20 w-3 rounded-b-sm bg-gradient-to-r from-slate-300 via-white to-slate-400 border border-slate-500/60 shadow-inner" />
+            <div className="h-16 sm:h-20 w-2.5 sm:w-3 rounded-b-sm bg-gradient-to-r from-slate-300 via-white to-slate-400 border border-slate-500/60 shadow-inner" />
           </motion.div>
         </div>
       </div>
