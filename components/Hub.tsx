@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import { CASELLE, COSTI, GiocoId, NOMI_GIOCHI } from "@/lib/config";
 import { puoGiocare, Stato } from "@/lib/engine";
 import InsegnaT from "./InsegnaT";
+import { useAudio } from "@/hooks/useAudio";
 
 const FINESTRA_TAP = 1500;
 const TAP_PER_RESET = 5;
@@ -23,6 +24,12 @@ export default function Hub({
 }) {
   const tap = useRef(0);
   const ultimoTap = useRef(0);
+  const { playCoin, muted, toggleMute } = useAudio();
+
+  function gestisciGioco(g: GiocoId) {
+    playCoin();
+    onGioco(g);
+  }
 
   function tocca() {
     const ora = Date.now();
@@ -37,11 +44,21 @@ export default function Hub({
   return (
     <div className="relative min-h-dvh pb-12">
       <div className="relative mx-auto flex min-h-dvh w-full max-w-md flex-col px-5 pt-6">
-        {/* Header con Insegna Neon & Scontrino VIP del Saldo */}
-        <header className="flex items-center justify-between gap-4">
-          <button onClick={tocca} aria-label="Reset Tabaccheria" className="shrink-0">
-            <InsegnaT />
-          </button>
+        {/* Header con Insegna Neon, Mute Toggle & Scontrino VIP del Saldo */}
+        <header className="flex items-center justify-between gap-3">
+          <div className="flex items-center gap-2 shrink-0">
+            <button onClick={tocca} aria-label="Reset Tabaccheria" className="shrink-0">
+              <InsegnaT />
+            </button>
+            <button
+              onClick={toggleMute}
+              title={muted ? "Attiva audio" : "Disattiva audio"}
+              aria-label="Toggle Audio"
+              className="flex h-9 w-9 items-center justify-center rounded-xl border border-[var(--color-oro)]/30 bg-black/40 text-sm transition-all hover:border-[var(--color-oro)] active:scale-95"
+            >
+              {muted ? "🔇" : "🔊"}
+            </button>
+          </div>
 
           {/* Scontrino VIP del Saldo */}
           <div className="glass-panel relative flex-1 rounded-2xl px-4 py-3 shadow-2xl overflow-hidden">
@@ -96,7 +113,7 @@ export default function Hub({
               id={id}
               indice={i}
               disponibile={puoGiocare(stato, id)}
-              onGioco={onGioco}
+              onGioco={gestisciGioco}
             />
           ))}
         </div>
@@ -115,14 +132,14 @@ export default function Hub({
             icona="/assets/img/sym-kitkat.webp"
             nota="Tre rulli fortunati"
             disponibile={puoGiocare(stato, "slot")}
-            onGioco={onGioco}
+            onGioco={gestisciGioco}
           />
           <Macchina
             id="ruota"
             icona="/assets/img/ruota.webp"
             nota="Otto spicchi premio"
             disponibile={puoGiocare(stato, "ruota")}
-            onGioco={onGioco}
+            onGioco={gestisciGioco}
           />
         </div>
       </div>

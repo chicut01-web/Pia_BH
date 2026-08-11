@@ -8,11 +8,13 @@ import type { Esito } from "@/lib/engine";
 import { facceFinali, SIMBOLI_SLOT } from "@/lib/scena";
 import type { Faccia } from "@/lib/scena";
 import Esitino from "./Esitino";
+import { useAudio } from "@/hooks/useAudio";
 
 const TEMPI_ARRESTO = [900, 1700, 2700];
 
 export default function Slot({ esito, onFine, onAncora }: { esito: Esito; onFine: () => void; onAncora: () => void }) {
   const finali = useMemo(() => facceFinali(esito, esito.stato.passiRng + 1), [esito]);
+  const { playTick, playReelStop } = useAudio();
 
   const [fermi, setFermi] = useState<number[]>([]);
   const [correnti, setCorrenti] = useState<Faccia[]>([0, 2, 4]);
@@ -27,6 +29,9 @@ export default function Slot({ esito, onFine, onAncora }: { esito: Esito; onFine
   useEffect(() => {
     if (!esito.eseguita) return;
     const t = setInterval(() => {
+      if (fermi.length < 3) {
+        playTick();
+      }
       setCorrenti((c) =>
         c.map((v, i) =>
           fermi.includes(i) ? v : ((typeof v === "number" ? v : 0) + 1) % SIMBOLI_SLOT.length,
@@ -34,18 +39,19 @@ export default function Slot({ esito, onFine, onAncora }: { esito: Esito; onFine
       );
     }, 80);
     return () => clearInterval(t);
-  }, [fermi, esito.eseguita]);
+  }, [fermi, esito.eseguita, playTick]);
 
   useEffect(() => {
     if (!esito.eseguita) return;
     const timers = TEMPI_ARRESTO.map((ms, i) =>
       setTimeout(() => {
+        playReelStop();
         setCorrenti((c) => c.map((v, j) => (j === i ? finali[i] : v)));
         setFermi((f) => (f.includes(i) ? f : [...f, i]));
       }, ms),
     );
     return () => timers.forEach(clearTimeout);
-  }, [finali, esito.eseguita]);
+  }, [finali, esito.eseguita, playReelStop]);
 
   if (!esito.eseguita) return null;
 

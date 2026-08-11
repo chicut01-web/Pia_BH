@@ -6,15 +6,39 @@ import { NOMI_GIOCHI } from "@/lib/config";
 import type { Esito } from "@/lib/engine";
 import { centroSpicchio, costruisciRuota, PASSO, SPICCHI } from "@/lib/scena";
 import Esitino from "./Esitino";
+import { useAudio } from "@/hooks/useAudio";
 
 export default function Ruota({ esito, onFine, onAncora }: { esito: Esito; onFine: () => void; onAncora: () => void }) {
   const { etichette, angolo } = useMemo(
     () => costruisciRuota(esito, esito.stato.passiRng + 2),
     [esito],
   );
+  const { playTick, playClick } = useAudio();
 
   const [girato, setGirato] = useState(false);
   const [finito, setFinito] = useState(false);
+
+  // Ticchettio durante la rotazione della ruota
+  useEffect(() => {
+    if (!girato || finito) return;
+    let t = 80;
+    let timerId: NodeJS.Timeout;
+    const inizio = Date.now();
+    const durata = 4500;
+
+    const suonaTick = () => {
+      const trascorso = Date.now() - inizio;
+      if (trascorso >= durata) return;
+      playTick();
+      // Rallenta il ticchettio man mano che la ruota si ferma
+      const progresso = trascorso / durata;
+      t = 80 + progresso * progresso * 400;
+      timerId = setTimeout(suonaTick, t);
+    };
+
+    timerId = setTimeout(suonaTick, t);
+    return () => clearTimeout(timerId);
+  }, [girato, finito, playTick]);
 
   const tornaSubito = useRef(false);
   useEffect(() => {
@@ -92,7 +116,10 @@ export default function Ruota({ esito, onFine, onAncora }: { esito: Esito; onFin
 
       {!girato && (
         <button
-          onClick={() => setGirato(true)}
+          onClick={() => {
+            playClick();
+            setGirato(true);
+          }}
           className="foglia-oro w-full max-w-[20rem] rounded-xl py-4 text-sm font-extrabold uppercase tracking-[0.2em] text-[#2b0808] shadow-2xl transition-transform active:scale-[0.98]"
         >
           Gira la Ruota 🎯

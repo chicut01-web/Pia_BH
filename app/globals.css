@@ -119,3 +119,23 @@ canvas.gratta {
   filter: drop-shadow(0 2px 10px rgba(0, 230, 118, 0.5));
 }
 
+/* Pattern di sicurezza guilloche per i biglietti */
+.bg-guilloche {
+  background-color: #faf7f0;
+  background-image: 
+    radial-gradient(circle at 50% 50%, rgba(180, 140, 40, 0.12) 1px, transparent 1px),
+    repeating-linear-gradient(45deg, rgba(160, 120, 30, 0.05) 0px, rgba(160, 120, 30, 0.05) 2px, transparent 2px, transparent 8px),
+    repeating-linear-gradient(-45deg, rgba(160, 120, 30, 0.05) 0px, rgba(160, 120, 30, 0.05) 2px, transparent 2px, transparent 8px);
+  background-size: 16px 16px, 12px 12px, 12px 12px;
+}
+
+/* Bordo laminato metallico oro 3D */
+.bordo-laminato {
+  box-shadow: 
+    0 0 0 1px rgba(255, 215, 0, 0.6),
+    0 0 0 3px rgba(139, 90, 0, 0.8),
+    0 0 0 4px rgba(255, 235, 150, 0.5),
+    0 20px 40px -10px rgba(0, 0, 0, 0.8);
+}
+
+

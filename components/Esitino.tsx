@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import confetti from "canvas-confetti";
 import { COSTI, GiocoId } from "@/lib/config";
 import type { Esito } from "@/lib/engine";
+import { useAudio } from "@/hooks/useAudio";
 
 const MOLLA = { duration: 0.55, ease: [0.16, 1, 0.3, 1] as const };
 
@@ -20,18 +21,30 @@ export default function Esitino({
   onAncora: () => void;
 }) {
   const puoAncora = esito.stato.piuccine >= COSTI[gioco];
+  const { playWin, playRigioca, playLoss, playCoin, playClick } = useAudio();
 
-  // Lancia i coriandoli se ha vinto o sbloccato un biglietto gratis
+  // Riproduce audio e coriandoli in base all'esito
   useEffect(() => {
-    if (esito.vinta || esito.rigioca) {
+    if (esito.vinta) {
+      playWin(esito.importo);
       confetti({
-        particleCount: esito.vinta ? 80 : 50,
+        particleCount: esito.importo >= 8 ? 110 : 80,
+        spread: 75,
+        origin: { y: 0.65 },
+        colors: ["#FFD700", "#00E676", "#FF2A55"],
+      });
+    } else if (esito.rigioca) {
+      playRigioca();
+      confetti({
+        particleCount: 50,
         spread: 70,
         origin: { y: 0.65 },
-        colors: esito.vinta ? ["#FFD700", "#00E676", "#FF2A55"] : ["#00B0FF", "#FFD700"],
+        colors: ["#00B0FF", "#FFD700"],
       });
+    } else {
+      playLoss();
     }
-  }, [esito.vinta, esito.rigioca]);
+  }, [esito.vinta, esito.rigioca, esito.importo, playWin, playRigioca, playLoss]);
 
   return (
     <motion.div
@@ -88,14 +101,20 @@ export default function Esitino({
       <div className="mt-5 flex w-full flex-col gap-2.5">
         {puoAncora && (
           <button
-            onClick={onAncora}
+            onClick={() => {
+              playCoin();
+              onAncora();
+            }}
             className="foglia-oro w-full rounded-xl py-3.5 text-xs font-extrabold uppercase tracking-[0.16em] text-[#2b0808] shadow-lg transition-transform active:scale-[0.98]"
           >
             Gioca Ancora ({COSTI[gioco]} {COSTI[gioco] === 1 ? "Piuccina" : "Piuccine"})
           </button>
         )}
         <button
-          onClick={onFine}
+          onClick={() => {
+            playClick();
+            onFine();
+          }}
           className="w-full rounded-xl border border-white/20 bg-white/5 py-3 text-xs font-bold uppercase tracking-[0.16em] text-white/80 transition-colors hover:bg-white/10 active:scale-[0.98]"
         >
           Torna in Tabaccheria
